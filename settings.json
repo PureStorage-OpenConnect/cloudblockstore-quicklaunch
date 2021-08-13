@@ -1,5 +1,5 @@
 {
-    "id": "CBSJumpstart",
+    "id": "cbs-jumpstart",
     "name": "Cloud Block Store JumpStart",
     "filter": "virtualization microsoft",
     "image": "http://code.purestorage.com/images/cbs208x150.png",
