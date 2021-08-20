@@ -1,6 +1,6 @@
 {
-    "id": "cbs-jumpstart",
-    "name": "Cloud Block Store JumpStart",
+    "id": "cbs-quicklauch",
+    "name": "Cloud Block Store Quick Launch",
     "filter": "virtualization microsoft",
     "image": "http://code.purestorage.com/images/cbs208x150.png",
     "featured": 1,
