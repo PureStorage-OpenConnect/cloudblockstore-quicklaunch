@@ -119,119 +119,6 @@ resource "azurerm_subnet" "cbs_subnet_iscsi" {
   address_prefixes     = ["10.0.4.0/24"]
 }
 
-resource "azurerm_network_security_group" "cbs_network_security_group_sys" {
-  name                = format("%s%s%s", var.azure_resourcegroup, var.azure_location, "-NSG-SYS")
-  location            = azurerm_resource_group.azure_rg.location
-  resource_group_name = azurerm_resource_group.azure_rg.name
-}
-
-resource "azurerm_subnet_network_security_group_association" "cbs_nsg_sys" {
-  subnet_id                 = azurerm_subnet.cbs_subnet_sys.id
-  network_security_group_id = azurerm_network_security_group.cbs_network_security_group_sys.id
-}
-
-resource "azurerm_network_security_group" "cbs_network_security_group_mgmt" {
-  name                = format("%s%s%s", var.azure_resourcegroup, var.azure_location, "-NSG-MGMT")
-  location            = azurerm_resource_group.azure_rg.location
-  resource_group_name = azurerm_resource_group.azure_rg.name
-}
-
-resource "azurerm_subnet_network_security_group_association" "cbs_nsg_mgmt" {
-  subnet_id                 = azurerm_subnet.cbs_subnet_mgmt.id
-  network_security_group_id = azurerm_network_security_group.cbs_network_security_group_mgmt.id
-}
-
-resource "azurerm_network_security_group" "cbs_network_security_group_repl" {
-  name                = format("%s%s%s", var.azure_resourcegroup, var.azure_location, "-NSG-REPL")
-  location            = azurerm_resource_group.azure_rg.location
-  resource_group_name = azurerm_resource_group.azure_rg.name
-}
-
-resource "azurerm_subnet_network_security_group_association" "cbs_nsg_repl" {
-  subnet_id                 = azurerm_subnet.cbs_subnet_repl.id
-  network_security_group_id = azurerm_network_security_group.cbs_network_security_group_repl.id
-}
-
-resource "azurerm_network_security_group" "cbs_network_security_group_iscsi" {
-  name                = format("%s%s%s", var.azure_resourcegroup, var.azure_location, "-NSG-ISCSI")
-  location            = azurerm_resource_group.azure_rg.location
-  resource_group_name = azurerm_resource_group.azure_rg.name
-}
-
-resource "azurerm_subnet_network_security_group_association" "cbs_nsg_iscsi" {
-  subnet_id                 = azurerm_subnet.cbs_subnet_iscsi.id
-  network_security_group_id = azurerm_network_security_group.cbs_network_security_group_iscsi.id
-}
-
-resource "azurerm_network_security_rule" "cbs_nsg_sys_rule_out" {
-  name                        = "cbs_sys_outbound"
-  priority                    = 100
-  direction                   = "Outbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "443"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.azure_rg.name
-  network_security_group_name = azurerm_network_security_group.cbs_network_security_group_sys.name
-}
-
-resource "azurerm_network_security_rule" "cbs_nsg_mgmt_rule_out" {
-  name                        = "cbs_mgmt_outbound"
-  priority                    = 100
-  direction                   = "Outbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "443"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.azure_rg.name
-  network_security_group_name = azurerm_network_security_group.cbs_network_security_group_mgmt.name
-}
-
-resource "azurerm_network_security_rule" "cbs_nsg_mgmt_rule_in" {
-  name                        = "cbs_mgmt_inbound"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_ranges      = ["22","80","443","8084"]
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.azure_rg.name
-  network_security_group_name = azurerm_network_security_group.cbs_network_security_group_mgmt.name
-}
-
-resource "azurerm_network_security_rule" "cbs_nsg_repl_rule_out" {
-  name                        = "cbs_repl_outbound"
-  priority                    = 100
-  direction                   = "Outbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_ranges      = ["8117","443"]
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.azure_rg.name
-  network_security_group_name = azurerm_network_security_group.cbs_network_security_group_repl.name
-}
-
-resource "azurerm_network_security_rule" "cbs_nsg_iscsi_rule_in" {
-  name                        = "cbs_iscsi_inbound"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "3260"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.azure_rg.name
-  network_security_group_name = azurerm_network_security_group.cbs_network_security_group_iscsi.name
-}
 
 resource "azurerm_subnet_nat_gateway_association" "cbs_nat_gateway_association" {
   subnet_id      = azurerm_subnet.cbs_subnet_sys.id
@@ -329,15 +216,6 @@ resource "cbs_array_azure" "azure_cbs" {
       azurerm_nat_gateway.cbs_nat_gateway,
       azurerm_nat_gateway_public_ip_association.cbs_pub_ip_association,
       azurerm_network_interface.networkinterface,
-      azurerm_network_security_group.cbs_network_security_group_iscsi,
-      azurerm_network_security_group.cbs_network_security_group_mgmt,
-      azurerm_network_security_group.cbs_network_security_group_repl,
-      azurerm_network_security_group.cbs_network_security_group_sys,
-      azurerm_network_security_rule.cbs_nsg_iscsi_rule_in,
-      azurerm_network_security_rule.cbs_nsg_mgmt_rule_in,
-      azurerm_network_security_rule.cbs_nsg_mgmt_rule_out,
-      azurerm_network_security_rule.cbs_nsg_repl_rule_out,
-      azurerm_network_security_rule.cbs_nsg_sys_rule_out,
       azurerm_public_ip.azure_nat_ip,
       azurerm_resource_group.azure_rg,
       azurerm_subnet.cbs_subnet_iscsi,
@@ -345,10 +223,6 @@ resource "cbs_array_azure" "azure_cbs" {
       azurerm_subnet.cbs_subnet_repl,
       azurerm_subnet.cbs_subnet_sys,
       azurerm_subnet_nat_gateway_association.cbs_nat_gateway_association,
-      azurerm_subnet_network_security_group_association.cbs_nsg_iscsi,
-      azurerm_subnet_network_security_group_association.cbs_nsg_mgmt,
-      azurerm_subnet_network_security_group_association.cbs_nsg_repl,
-      azurerm_subnet_network_security_group_association.cbs_nsg_sys,
       azurerm_virtual_network.cbs_virtual_network,
       azurerm_marketplace_agreement.plan_6_1_8,
       azurerm_key_vault.cbs_key_vault,
@@ -366,7 +240,6 @@ output "cbs_mgmt_endpoint" {
 output "cbs_mgmt_endpoint_ct0" {
     value = cbs_array_azure.azure_cbs.management_endpoint_ct0
 }
-
 output "cbs_mgmt_endpoint_ct1" {
     value = cbs_array_azure.azure_cbs.management_endpoint_ct1
 }
