@@ -33,10 +33,10 @@ provider "azurerm" {
   subscription_id = var.azure_subscription_id
 }
 
-resource "azurerm_marketplace_agreement" "plan_6_1_8" {
+resource "azurerm_marketplace_agreement" "plan" {
     publisher = "purestoragemarketplaceadmin"
     offer = "pure_storage_cloud_block_store_deployment"
-    plan = "cbs_azure_6_1_8"
+    plan = var.plan_name
 }
 
 data "azurerm_client_config" "client_config" {}
@@ -224,7 +224,7 @@ resource "cbs_array_azure" "azure_cbs" {
       azurerm_subnet.cbs_subnet_sys,
       azurerm_subnet_nat_gateway_association.cbs_nat_gateway_association,
       azurerm_virtual_network.cbs_virtual_network,
-      azurerm_marketplace_agreement.plan_6_1_8,
+      azurerm_marketplace_agreement.plan,
       azurerm_key_vault.cbs_key_vault,
       azurerm_virtual_network_peering.tf_cbs,
       azurerm_virtual_network_peering.cbs_tf
