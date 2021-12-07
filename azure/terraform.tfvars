@@ -21,10 +21,10 @@ alert_recipients = ["user@domain.com"] #Email for Alerts
 array_model = "V10MUR1" #Array Model
 zone = 1 #Azure Zone
 groups = ["CBS-JIT-GROUP"] #Group for JIT Approval
-plan_name = "cbs_azure_6_2_1" #specify CBS Version 6.2.1 is latest.
+plan_name = "cbs_azure_6_2_1" #specify CBS Version 6.1.11 and 6.2.1 are the latest.
 plan_product = "pure_storage_cloud_block_store_deployment" #Sspecify CBS Version
 plan_publisher = "purestoragemarketplaceadmin" #specify CBS Version
-plan_version = "1.0.7" #specify CBS Version
+plan_version = "latest" #specify CBS Version
 key_file_path = "~/.ssh/id_rsa" # key file path for pureuser
 
 /* Current Supported Regions for CBS Terraform Deployment
