@@ -18,7 +18,7 @@ aws_user_data = <<EOF
         EOF
 
 #CBS Variables
-template_url            = "https://s3.amazonaws.com/awsmp-fulfillment-cf-templates-prod/4ea2905b-7939-4ee0-a521-d5c2fcb41214/0e0ca88196014065b8ae7e5793e95999.template"
+template_url            = "https://s3.amazonaws.com/awsmp-fulfillment-cf-templates-prod/4ea2905b-7939-4ee0-a521-d5c2fcb41214.18cd55bc-47be-45e3-8eaa-2b00c594fa57.template" //6.2.1
 log_sender_domain       = "domain.com"
 alert_recipients        = ["user@domain.com"]
 purity_instance_type    = "V10AR1"
