@@ -413,6 +413,7 @@ resource "aws_iam_role_policy" "cbs_role_policy" {
                         "s3:PutBucketPolicy",
                         "s3:PutBucketTagging",
                         "s3:PutBucketVersioning",
+                        "s3:PutMetricsConfiguration",
                         "sts:assumerole"
                     ],
                     "Resource": "*"
